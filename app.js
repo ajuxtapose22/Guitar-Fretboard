@@ -134,13 +134,14 @@
             const chordNameSection = document.querySelector('.chord-name-section'); // Ensure you select the chord name section
             chordNameSection.innerHTML = '';
             const chordFormula = [0, 4, 7]; // Chord formula for major chords
-        
+           
             for (let i = 0; i < notesFlat.length; i++) {
                 const chordNameElement = tools.createElement('div');
                 const rootNote = notesFlat[i];
                 const chordNotes = chordFormula.map(interval => (i + interval) % 12);
                 const chordNoteNames = chordNotes.map(noteIndex => notesFlat[noteIndex]);
-        
+                chordNameElement.classList.add("chordDiv");
+                
                 chordNoteNames.forEach((note, index) => {
                     const noteSpan = document.createElement('span');
                     noteSpan.textContent = note;
@@ -153,7 +154,6 @@
                         chordNameElement.appendChild(commaSpan);
                     }
                 });
-        
                 chordNameSection.appendChild(chordNameElement);
             }
         },
@@ -165,6 +165,8 @@
     
     const handlers = {
     
+   
+
         showNoteDot(event) {
             // Check if showAllNotes is selected
             if(showAllNotes) {
@@ -228,17 +230,47 @@
     
         setNotesToShow(event){
             let noteToShow = event.target.innerText;
-            app.toggleMultipleNotes(noteToShow, 1);
+            allNotes.forEach(noteFret => {
+                if (noteFret.dataset.note === noteToShow) {
+                    noteFret.style.setProperty('--noteDotOpacity', 1);
+                }
+            });
         },
-    
+        
         setNotesToHide(event){
             if (!showAllNotes){
                 let noteToHide = event.target.innerText;
-                app.toggleMultipleNotes(noteToHide, 0);
+                allNotes.forEach(noteFret => {
+                    if (noteFret.dataset.note === noteToHide) {
+                        noteFret.style.setProperty('--noteDotOpacity', 0);
+                    }
+                });
             } else { 
                 return;
             }
+        }, 
+
+        showChordNotes(event) {
+            console.log("Mouse over chord name");
+            const chordNotes = event.currentTarget.textContent.split(' ');
+            // console.log("Chord notes:", chordNotes);
+            chordNotes.forEach(note => {
+                allNotes.forEach(noteFret => {
+                    if (noteFret.dataset.note === note) {
+                        noteFret.style.setProperty('--noteDotOpacity', 1);
+                    }
+                });
+            });
         },
+        
+        hideChordNotes() {
+            // console.log("Mouse out of chord name");
+            allNotes.forEach(noteFret => {
+                noteFret.style.setProperty('--noteDotOpacity', 0);
+            });
+        },
+        
+        
         setupEventListeners() {
             fretboard.addEventListener('mouseover',this.showNoteDot);
             fretboard.addEventListener('mouseout', this.hideNoteDot);
@@ -249,8 +281,9 @@
             showMultipleNotesSelector.addEventListener('change', this.setShowMultipleNotes);
             noteNameSection.addEventListener('mouseover', this.setNotesToShow);
             noteNameSection.addEventListener('mouseout', this.setNotesToHide);
+            
         }
-    }
+    };
     const tools = {
         createElement(element, content) {
             element = document.createElement(element);
