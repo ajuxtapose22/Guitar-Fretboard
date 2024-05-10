@@ -177,6 +177,10 @@ label {
     margin: 3px;
 }
 
+.root-note {
+    color: red; /* Change this to the color you want for the root note */
+}
+
 .note-section-container {
     display: flex;
     padding: 12px;

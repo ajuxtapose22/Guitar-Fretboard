@@ -132,33 +132,35 @@
         // CHORD NAME SECTION
         setupChordNameSection() {
             const chordNameSection = document.querySelector('.chord-name-section'); // Ensure you select the chord name section
-        
             chordNameSection.innerHTML = '';
-        
             const chordFormula = [0, 4, 7]; // Chord formula for major chords
         
             for (let i = 0; i < notesFlat.length; i++) {
                 const chordNameElement = tools.createElement('div');
-               
                 const rootNote = notesFlat[i];
-                const majorThird = notesFlat[4];
-                const perfectFifth= notesFlat[7];
                 const chordNotes = chordFormula.map(interval => (i + interval) % 12);
                 const chordNoteNames = chordNotes.map(noteIndex => notesFlat[noteIndex]);
-                
-                chordNameElement.textContent = `${rootNote}: ${chordNoteNames.join(', ')}`;
+        
+                chordNoteNames.forEach((note, index) => {
+                    const noteSpan = document.createElement('span');
+                    noteSpan.textContent = note;
+                    const rootNoteColor = fretboardColors[rootNote];
+                    noteSpan.style.color = rootNoteColor; // Set color for all notes in the chord
+                    chordNameElement.appendChild(noteSpan);
+                    if (index < chordNoteNames.length - 1) { // Add comma separator if not the last note
+                        const commaSpan = document.createElement('span');
+                        commaSpan.textContent = ' ';
+                        chordNameElement.appendChild(commaSpan);
+                    }
+                });
+        
                 chordNameSection.appendChild(chordNameElement);
             }
         },
-       
-        // SHOW MULTIPLE NOTES SECTION
-        toggleMultipleNotes(noteName, opacity) {
-            for (let i = 0; i < allNotes.length; i++) {
-                if (allNotes[i].dataset.note === noteName) {
-                    allNotes[i].style.setProperty('--noteDotOpacity', opacity);
-                }
-            }
-        }
+        
+        
+        
+        
     }
     
     const handlers = {
