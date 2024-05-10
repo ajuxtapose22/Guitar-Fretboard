@@ -10,32 +10,61 @@
 </head>
 
 <body>
+    <!-- SETTINGS SECTION  -->
     <div class="settings">
+       
+        <!-- INSTRUMENT SELECTOR -->
         <label for="instrument-selector">Selected Instrument:</label>
         <select name="instrument-selector" id="instrument-selector"></select>
-       
+        
+        <!-- ACCIDENTALS  -->
         <div class="accidental-selector">
-            <input type="radio" class="acc-select" id="flats" name="accidentals" value="flats" checked>
-            <label for="flats">♭</label>
-            <input type="radio" class="acc-select" id="sharps" name="accidentals" value="sharps" >
-            <label for="flats">♯</label>
+            <div class="accidentalHeading">
+                <input type="radio" class="acc-select" id="flats" name="accidentals" value="flats" checked>
+                <label for="flats">♭</label>
+                <input type="radio" class="acc-select" id="sharps" name="accidentals" value="sharps">
+                <label for="flats">♯</label>
+            </div>
         </div>
+
+        <!-- NUMBER OF FRETS  -->
         <label for="number-of-frets">Number of frets</label>
         <input type="number" id="number-of-frets" min="5" max="22" value="12">
-        
-        <label for="show-all-notes">Show all notes: </label>
-        <input type="checkbox" id="show-all-notes">
 
+        <!-- SHOW ALL NOTES -->
+        <div class="showAllNotes">
+            <label for="show-all-notes">Show all notes: </label>
+            <input type="checkbox" id="show-all-notes">
+        </div>
+
+        <!--  MULTIPLE NOTES -->
         <label for="show-multiple-notes">Show multiple notes: </label>
         <input type="checkbox" id="show-multiple-notes">
+    </div>
 
-        
+    <!-- NOTE SECTION  -->
+    <div class="center-container">
+        <div class="note-section-container">
+            <div class="note-name-section"></div>
+        </div>
     </div>
-    <div class="note-name-section"></div>
-    <div class="toggleMode">
-        <button id="toggleModeButton">Toggle Mode</button>
+    
+    <!-- FRETBOARD SECTION -->
+    <div class="fretboard-container">
+        <div class="fretboard"></div>
     </div>
-    <div class="fretboard"></div>
+    <br>
+    
+    <!-- CHORD NAME SECTION --> 
+    <div class="center-container">
+      <div class="chord-section-container">
+          <div class="chord-name-section"></div>
+        </div>  
+    </div>
+    
+
+
+
     <script src="app.js"></script>
 </body>
 

@@ -2,6 +2,27 @@
 
     const root = document.documentElement;
     const fretboard = document.querySelector('.fretboard');
+
+    const fretboardColors = {
+        'C': 'crimson',
+        'C#': 'chocolate',
+        'Db': 'chocolate',
+        'D': 'darkOrange',
+        'D#': 'goldenRod',
+        'Eb': 'goldenRod',
+        'E': 'burlyWood',
+        'F': 'green',
+        'F#': 'forestGreen',
+        'Gb': 'forestGreen',
+        'G': 'LightSkyBlue',
+        'G#': 'DodgerBlue',
+        'Ab': 'DodgerBlue',
+        'A': 'darkblue',
+        'A#': 'magenta',
+        'Bb': 'magenta',
+        'B': 'blueViolet'
+    };
+
     const instrumentSelector = document.querySelector('#instrument-selector');
     const accidentalSelector = document.querySelector('.accidental-selector');
     const numberOfFretsSelector = document.querySelector('#number-of-frets');
@@ -32,6 +53,7 @@
             this.setupFretboard();
             this.setupSelectedInstrumentSelector();
             this.setupNoteNameSection();
+            this.setupChordNameSection();
             handlers.setupEventListeners();
         },
         setupFretboard() {
@@ -43,7 +65,6 @@
                 string.classList.add('string');
                 fretboard.appendChild(string);
     
-    
                 //  Create frets
                 for (let fret = 0; fret <= numberOfFrets; fret++) {
                     let noteFret = tools.createElement('div');
@@ -51,9 +72,10 @@
                     string.appendChild(noteFret);
     
                     //  Create String Notes 
-                    let noteName = this.generateNoteNames((fret + instrumentTuningPresets[selectedInstrument][i]), accidentals);
+                    let { name: noteName, color: noteColor } = this.generateNoteNames((fret + instrumentTuningPresets[selectedInstrument][i]), accidentals);
                     noteFret.setAttribute('data-note', noteName);
-    
+                    noteFret.style.setProperty('--noteDotColor', noteColor);
+                       
                     //  Add single fret marks
                     if (i === 0 && singleFretMarkPositions.indexOf(fret) !== -1) {
                         noteFret.classList.add('single-fretmark');
@@ -68,25 +90,31 @@
             }
             allNotes = document.querySelectorAll('.note-fret');
         },
-    
+
+        
+        // CREATE NOTE NAMES 
         generateNoteNames(noteIndex, accidentals) {
             noteIndex = noteIndex % 12;
             if (noteIndex < 0) noteIndex += 12;
-            let noteName;
+            let noteName, noteColor;
             if (accidentals === "flats") {
                 noteName = notesFlat[noteIndex];
             } else if (accidentals === "sharps") {
                 noteName = notesSharp[noteIndex];
             }
-            return noteName;
+            noteColor = fretboardColors[noteName];
+            return { name: noteName, color: noteColor };
         },
-    
+        
+        // SELECT INSTRUMENT 
         setupSelectedInstrumentSelector() {
             for (instrument in instrumentTuningPresets) {
                 let instrumentOption = tools.createElement('option', instrument);
                 instrumentSelector.appendChild(instrumentOption);
             }
         },
+        
+        // NOTE NAME SECTION
         setupNoteNameSection() {
             noteNameSection.innerHTML = '';
             let noteNames;
@@ -101,8 +129,30 @@
             })
         },
         
+        // CHORD NAME SECTION
+        setupChordNameSection() {
+            const chordNameSection = document.querySelector('.chord-name-section'); // Ensure you select the chord name section
+        
+            chordNameSection.innerHTML = '';
+        
+            const chordFormula = [0, 4, 7]; // Chord formula for major chords
+        
+            for (let i = 0; i < notesFlat.length; i++) {
+                const chordNameElement = tools.createElement('div');
+               
+                const rootNote = notesFlat[i];
+                const majorThird = notesFlat[4];
+                const perfectFifth= notesFlat[7];
+                const chordNotes = chordFormula.map(interval => (i + interval) % 12);
+                const chordNoteNames = chordNotes.map(noteIndex => notesFlat[noteIndex]);
+                
+                chordNameElement.textContent = `${rootNote}: ${chordNoteNames.join(', ')}`;
+                chordNameSection.appendChild(chordNameElement);
+            }
+        },
+       
+        // SHOW MULTIPLE NOTES SECTION
         toggleMultipleNotes(noteName, opacity) {
-           
             for (let i = 0; i < allNotes.length; i++) {
                 if (allNotes[i].dataset.note === noteName) {
                     allNotes[i].style.setProperty('--noteDotOpacity', opacity);
@@ -137,7 +187,7 @@
                 event.target.style.setProperty('--noteDotOpacity', 0);
             }
         },
-    
+ 
         setSelectedInstrument(event){
             selectedInstrument = event.target.value;
             numberOfStrings = instrumentTuningPresets[selectedInstrument].length;
@@ -211,7 +261,4 @@
     
     // Calling the init method to initialize the app
     app.init();
-    
-
 })();
-
