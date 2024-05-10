@@ -1,11 +1,11 @@
 # Guitar-Fretboard
 Guitar Fretboard Learning Application
-
--Download folder onto computer
--Open up "index.html" file in google chrome
--Learn your guitar notes!!
-
+<br>
+-Download folder onto computer <br>
+-Open up "index.html" file in google chrome <br>
+-Learn your guitar notes!! <br>
+<br>
 -Currently working on chord notes displaying
 
-
+<br>
 Thank You!
