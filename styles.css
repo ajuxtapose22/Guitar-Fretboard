@@ -6,6 +6,7 @@
     --string-height: 10;
     --half-string-height: calc(var(--string-height) / 2);
     --string-top-position: calc(var(--fretboard-height) / var(--number-of-strings) / 2 - var(--half-string-height));
+    --noteDotOpacity: 0;
 }
 
 * {
@@ -16,11 +17,34 @@ body {
     background: #353535;
     font-family: Lato, sans-serif;
 }
+.settings {
+    display: flex;
+    color: white;
+    padding: 20px;
+    border-bottom: 1px solid #4444;
+    background: #282828;
+}
+
+
+
+.accidental-selector {
+    margin-left: 20px;
+}
+
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+    opacity: 1;
+}
+
+label {
+    margin: 0 10px;
+}
+
 .fretboard {
     display: flex;
     flex-direction: column;
-    background: #be975b;
+    background: #be975b url(./images/guitarFretboard.png);
     width: 100%;
+    min-width: 100px;
     height: calc(var(--fretboard-height) * 1px);
     margin-top: 60px; 
 }
@@ -34,13 +58,15 @@ body {
     content: '';
     width: 100%;
     height: calc(var(--string-height) * 1px);
-    background: linear-gradient(#d2d2d2, #e3e3e3);
-    box-shadow: 76px 3px 10px #806233;
+    background: linear-gradient(#787676, #dad8d8);
+    box-shadow: 76px 3px 10px #856c45;
     z-index: 1;
     position: absolute;
     top: 22px;
     top: calc(var(--string-top-position) * 1px);
 }
+
+
 .note-fret {
     display: flex;
     flex: 1;
@@ -56,10 +82,11 @@ body {
     min-width: 76px;
     flex-grow: 0;
     flex-shrink: 0;
-    border-image: linear-gradient(to left, #fff4d3, #ffecc7, #ffe8a5) 1 100%;
+    border-image: linear-gradient(to left, #cd9e0f, #ffecc7, #ffe8a5) 1 100%;
 }
+
 .note-fret:before {
-    content: "C";
+    content: attr(data-note);
     width: 33px;
     height: 33px;
     border-radius: 50%;
@@ -68,38 +95,63 @@ body {
     background: teal;
     z-index: 2;
     color: #eee;
-    opacity: 0.2;
-}
-.single-fretmark:after {
+    opacity: var(--noteDotOpacity);
+
+} 
+
+.single-fretmark:after, .double-fretmark:before, .double-fretmark:after {
     content: "";
     position: absolute;
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #806233;
+    background: #f2f1f0 ;
+}
+
+.single-fretmark:after {
     top: 150px;
     transform: translate(0, -50%)
 }
 
 .double-fretmark:before {
-    content: "";
-    position: absolute;
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    background: #806233;
     top: 80px;
-    transform: translate(-140%, 50%);
+    transform: translate(-145%, 50%);
 
 }
 .double-fretmark:after {
-    content: "";
-    position: absolute;
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    background: #806233;
     top: 180px;
-    transform: translate(-140%, 50%);
-    
+    transform: translate(-145%, 50%);   
+}
+
+
+.note-name-section {
+    width: 100%;
+    color: #fff;
+    font-weight: bold;
+    font-size: 2.5em;
+    display: flex;
+    justify-content: center;
+}
+
+.note-name-section span {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.note-name-section span:hover {
+    color: #44a0d6
+}
+
+
+.toggleMode {
+    display: flex;
+    justify-content: center;
+    padding: 3px;
+    margin: 3px;
+}
+
+#toggleModeButton {
+    padding: 3px;
+    margin: 3px;
+    font-weight: bold;
 }
