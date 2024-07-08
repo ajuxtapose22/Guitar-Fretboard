@@ -164,10 +164,7 @@
     }
     
     const handlers = {
-    
-   
-
-        showNoteDot(event) {
+            showNoteDot(event) {
             // Check if showAllNotes is selected
             if(showAllNotes) {
                 return;
